@@ -1,0 +1,205 @@
+<html manifest=node.manifest>
+<head>
+  <meta charset="utf-8">
+  <title>Code Like A Child - Arduino</title>
+
+  <link rel="stylesheet" href="tabs_style.css">
+
+  <script type="text/javascript" src="google-blockly/blockly_compressed.js"></script>
+  <script type="text/javascript" src="google-blockly/blocks_compressed.js"></script>
+  <script type="text/javascript" src="google-blockly/arduino_compressed.js"></script>
+  <script type="text/javascript" src="google-blockly/msg/js/fr.js"></script>
+
+  <script type="text/javascript" src="google-blockly/blocks/custom.js"></script>
+
+  <script type="text/javascript" src="google-blockly/generators/arduino/custom.js"></script>
+
+  <script>
+
+/**
+ * List of tab names.
+ * @private
+ */
+var TABS_ = ['blocks', 'arduino', 'xml'];
+
+var selected = 'blocks';
+
+/**
+ * Switch the visible pane when a tab is clicked.
+ * @param {string} clickedName Name of tab clicked.
+ */
+function tabClick(clickedName) {
+  // If the XML tab was open, save and render the content.
+  if (document.getElementById('tab_xml').className == 'tabon') {
+    var xmlTextarea = document.getElementById('content_xml');
+    var xmlText = xmlTextarea.value;
+    var xmlDom = null;
+    try {
+      xmlDom = Blockly.Xml.textToDom(xmlText);
+    } catch (e) {
+      var q =
+          window.confirm('Error parsing XML:\n' + e + '\n\nAbandon changes?');
+      if (!q) {
+        // Leave the user on the XML tab.
+        return;
+      }
+    }
+    if (xmlDom) {
+      Blockly.mainWorkspace.clear();
+      Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
+    }
+  }
+
+  if (document.getElementById('tab_blocks').className == 'tabon') {
+    Blockly.mainWorkspace.setVisible(false);
+  }
+  // Deselect all tabs and hide all panes.
+  for (var i = 0; i < TABS_.length; i++) {
+    var name = TABS_[i];
+    document.getElementById('tab_' + name).className = 'taboff';
+    document.getElementById('content_' + name).style.visibility = 'hidden';
+  }
+
+ // Select the active tab.
+  selected = clickedName;
+  document.getElementById('tab_' + clickedName).className = 'tabon';
+  // Show the selected pane.
+  document.getElementById('content_' + clickedName).style.visibility =
+      'visible';
+  renderContent();
+  if (clickedName == 'blocks') {
+    Blockly.mainWorkspace.setVisible(true);
+  }
+  Blockly.fireUiEvent(window, 'resize');
+}
+
+/**
+ * Populate the currently selected pane with content generated from the blocks.
+ */
+function renderContent() {
+  var content = document.getElementById('content_' + selected);
+  // Initialize the pane.
+  if (content.id == 'content_blocks') {
+    // If the workspace was changed by the XML tab, Firefox will have performed
+    // an incomplete rendering due to Blockly being invisible.  Rerender.
+    Blockly.mainWorkspace.render();
+  } else if (content.id == 'content_xml') {
+    var xmlTextarea = document.getElementById('content_xml');
+    var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+    xmlTextarea.value = xmlText;
+    xmlTextarea.focus();
+  /*} else if (content.id == 'content_javascript') {
+    content.innerHTML = Blockly.JavaScript.workspaceToCode();
+  } else if (content.id == 'content_dart') {
+    content.innerHTML = Blockly.Dart.workspaceToCode();
+  } else if (content.id == 'content_python') {
+    content.innerHTML = Blockly.Python.workspaceToCode();*/
+  } else if (content.id == 'content_arduino') {
+    //content.innerHTML = Blockly.Arduino.workspaceToCode();
+    var arduinoTextarea = document.getElementById('content_arduino');
+    arduinoTextarea.value = Blockly.Arduino.workspaceToCode();
+    arduinoTextarea.focus();
+  }
+}
+/**
+ * Initialize Blockly.  Called on page load.
+ */
+function init() {
+  window.addEventListener('resize', onresize, false);
+
+  var toolbox = document.getElementById('toolbox');
+  Blockly.inject(document.getElementById('content_blocks'),
+      {grid:
+          {spacing: 25,
+           length: 3,
+           colour: '#ccc',
+           snap: true},
+       media: '../../media/',
+       toolbox: toolbox});
+
+
+}
+  </script>
+  <style>
+
+  </style>
+</head>
+<body onload="init()">
+  <table width="100%">
+    <tr>
+      <td>
+        <h1>Code Like A Child</h1>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table width="100%">
+          <tr id="tabRow" height="1em">
+            <td id="tab_blocks" class="tabon" onclick="tabClick('blocks')">Blocks</td>
+            <td class="tabmin">&nbsp;</td>
+            <!--td id="tab_javascript" class="taboff" onclick="tabClick(this.id)">JavaScript</td>
+            <td class="tabmin">&nbsp;</td-->
+            <!--td id="tab_dart" class="taboff" onclick="tabClick(this.id)">Dart</td>
+            <td class="tabmin">&nbsp;</td>
+            <td id="tab_python" class="taboff" onclick="tabClick(this.id)">Python</td>
+            <td class="tabmin">&nbsp;</td-->
+            <td id="tab_arduino" class="taboff" onclick="tabClick('arduino')">Arduino</td>
+            <td class="tabmin">&nbsp;</td>
+            <td id="tab_xml" class="taboff" onclick="tabClick('xml')">XML</td>
+            <td class="tabmax"/>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+  </table>
+  <div id="content_blocks" class="content" style="height: 600px; width: 100%;"></div>
+  <textarea id="content_arduino" class="content" readonly wrap="off" style="height: 600px; width: 100%;"></textarea>
+  <textarea id="content_xml" class="content" wrap="off" style="height: 600px; width: 100%;"></textarea>
+
+  <xml id="toolbox" style="display: none">
+    <category name="Logique"  colour="210">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_null"></block>
+    </category>
+    <category name="Contrôles" colour="120">
+      <block type="controls_repeat_ext"></block>
+      <block type="controls_for">
+        <value name="FROM">
+          <block type="math_number">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <value name="TO">
+          <block type="math_number">
+            <field name="NUM">10</field>
+          </block>
+        </value>
+      </block>
+      <block type="base_delay">
+        <value name="DELAY_TIME">
+          <block type="math_number">
+            <field name="NUM">1000</field>
+          </block>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+    </category>
+    <category name="Math"  colour="230">
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+
+    </category>
+    <category name="Texte">
+      <block type="text"></block>
+    </category>
+    <category name="Variables" custom="VARIABLE"></category>
+    <category name="INPUT / OUTPUT">
+    </category>
+  </xml>
+</body>
+</html>

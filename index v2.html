@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Code Like A Child</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- 1. Inclure les scripts de Blockly -->
+  <script src="google-blockly/blockly_compressed.js"></script>
+  <script src="google-blockly/blocks_compressed.js"></script>
+
+  <script src="google-blockly/blocks/custom.js"></script>
+
+  <!-- 2. Inclure les scripts de langue (ici FR) -->
+  <script src="google-blockly/msg/js/fr.js"></script>
+
+
+</head>
+<body>
+  <h1>Code Like A Child</h1>
+
+  <!-- 3. Définition de la div dans laquelle inclure Blockly -->
+  <div id="blocklyDiv" style="height: 600px; width: 1200px;"></div>
+
+  <!-- 4. Structure de la boîte à outils -->
+  <xml id="toolbox" style="display: none">
+    <block type="controls_if"></block>
+    <block type="logic_compare"></block>
+    <block type="controls_repeat_ext"></block>
+    <block type="math_number"></block>
+    <block type="math_arithmetic"></block>
+    <block type="text"></block>
+    <block type="text_print"></block>
+    <block type="string_length"></block>
+  </xml>
+
+  <!-- 5. Injection de Blockly dans la div -->
+  <script>
+    var workspace = Blockly.inject('blocklyDiv',
+        {media: '../../media/',
+         toolbox: document.getElementById('toolbox')});
+  </script>
+</body>
+</html>
