@@ -17,3 +17,21 @@ Blockly.Blocks['base_delay'] = {
     this.setTooltip('Delay specific time');
   }
 };
+
+Blockly.Blocks['BuildIn_LED'] = {
+  init: function() {
+    this.setColour(0);
+
+    this.appendDummyInput()
+            .appendField('Statut LED intégrée :')
+            .appendField(new Blockly.FieldDropdown([
+                           ['HIGH', 'HIGH'],
+                           ['LOW', 'LOW']
+                         ]),
+                         'STATUS');
+
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+  }
+};

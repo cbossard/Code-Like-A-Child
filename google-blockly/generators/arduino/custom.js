@@ -15,3 +15,12 @@ Blockly.Arduino['text_indexOf'] = function(block) {
   var code = text + '.' + operator + '(' + subString + ')';
   return [code, Blockly.Arduino.ORDER_MEMBER];
 };
+
+
+Blockly.Arduino['BuildIn_LED'] = function(block) {
+
+  var status = block.getFieldValue('STATUS');
+
+  var code = "digitalWrite(LED_BUILTIN, " + status + ");";
+  return [code, Blockly.Arduino.ORDER_MEMBER];
+};
