@@ -14,7 +14,7 @@ Blockly.Arduino.base_delay = function() {
   return code;
 };
 
-Blockly.Arduino['BuildIn_LED'] = function(block) {
+Blockly.Arduino['BuiltIn_LED'] = function(block) {
   var status = block.getFieldValue('STATUS');
 
   var code = "digitalWrite(LED_BUILTIN, " + status + ");\n";

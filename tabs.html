@@ -12,6 +12,8 @@
 
   <script type="text/javascript" src="google-blockly/blocks/custom.js"></script>
 
+  <script type="text/javascript" src="google-blockly/generators/arduino/base.js"></script>
+  <script type="text/javascript" src="google-blockly/generators/arduino/control.js"></script>
   <script type="text/javascript" src="google-blockly/generators/arduino/custom.js"></script>
 
   <script>
@@ -167,7 +169,13 @@ function init() {
       <block type="logic_null"></block>
     </category>
     <category name="Contrôles" colour="120">
-      <block type="controls_repeat_ext"></block>
+      <block type="base_delay">
+        <value name="DELAY_TIME">
+          <block type="math_number">
+            <field name="NUM">1000</field>
+          </block>
+        </value>
+      </block>
       <block type="controls_for">
         <value name="FROM">
           <block type="math_number">
@@ -177,13 +185,6 @@ function init() {
         <value name="TO">
           <block type="math_number">
             <field name="NUM">10</field>
-          </block>
-        </value>
-      </block>
-      <block type="base_delay">
-        <value name="DELAY_TIME">
-          <block type="math_number">
-            <field name="NUM">1000</field>
           </block>
         </value>
       </block>
@@ -199,7 +200,7 @@ function init() {
     </category>
     <category name="Variables" custom="VARIABLE" colour="50"></category>
     <category name="INPUT / OUTPUT" colour="0">
-        <block type="BuildIn_LED"></block>
+        <block type="BuiltIn_LED"></block>
     </category>
   </xml>
 </body>

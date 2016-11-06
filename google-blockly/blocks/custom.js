@@ -18,7 +18,7 @@ Blockly.Blocks['base_delay'] = {
   }
 };
 
-Blockly.Blocks['BuildIn_LED'] = {
+Blockly.Blocks['BuiltIn_LED'] = {
   init: function() {
     this.setColour(0);
 
