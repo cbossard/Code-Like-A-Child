@@ -818,7 +818,7 @@ goog.History.prototype.getIframeToken_ = function() {
     var contentWindow = this.iframe_.contentWindow;
     if (contentWindow) {
       var hash;
-      /** @preserveTry */
+
       try {
         // Iframe tokens are urlEncoded
         hash = goog.string.urlDecode(this.getLocationFragment_(contentWindow));
@@ -988,8 +988,6 @@ goog.History.EventType = goog.history.EventType;
 
 /**
  * Constant for the history change event type.
- * @param {string} token The string identifying the new history state.
- * @extends {goog.events.Event}
  * @constructor
  * @deprecated Use goog.history.Event.
  * @final
