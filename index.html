@@ -9,33 +9,137 @@
     <script src="blockly/blockly_uncompressed.js"></script>
     <script src="blockly/blocks_compressed.js"></script>
 
+    <script src="blockly/blocks/cucumber.js"></script>
+    <script src="blockly/generators/cucumber/cucumber.js"></script>
+    <script src="blockly/generators/cucumber/blocks.js"></script>
+
+
     <!-- 2. Include localization scripts -->
     <script src="blockly/msg/js/en.js"></script>
-  </head>
-  <body>
-    <h1>Code Like A Child</h1>
-
-     <!-- 3. The div in which Blockly is injected -->
-     <div id="content_blocks" class="content" style="height: 600px; width: 100%;"></div>
-
-    <!-- 4. toolbox -->
-     <xml id="toolbox" style="display: none">
-
-      <block type="controls_if"></block>
-      <block type="logic_compare"></block>
-      <block type="controls_repeat_ext"></block>
-      <block type="math_number"></block>
-      <block type="math_arithmetic"></block>
-      <block type="text"></block>
-      <block type="text_print"></block>
-
-     </xml>
-
-     <!-- 5. Blockly injection -->
     <script>
-      var workspace = Blockly.inject('content_blocks',
-          {media: '../../media/',
-           toolbox: document.getElementById('toolbox')});
-    </script>
-  </body>
+      /**
+       * List of tab names.
+       * @private
+       */
+      var TABS_ = ['blocks', 'cucumber', 'cucumberJS'];
+
+      var selected = 'blocks';
+
+      /**
+       * Switch the visible pane when a tab is clicked.
+       * @param {string} clickedName Name of tab clicked.
+       */
+      function tabClick(clickedName) {
+
+
+        if (document.getElementById('tab_blocks').className == 'tabon') {
+          Blockly.mainWorkspace.setVisible(false);
+        }
+        // Deselect all tabs and hide all panes.
+        for (var i = 0; i < TABS_.length; i++) {
+          var name = TABS_[i];
+          document.getElementById('tab_' + name).className = 'taboff';
+          document.getElementById('content_' + name).style.visibility = 'hidden';
+        }
+
+       // Select the active tab.
+        selected = clickedName;
+        document.getElementById('tab_' + clickedName).className = 'tabon';
+        // Show the selected pane.
+        document.getElementById('content_' + clickedName).style.visibility =
+            'visible';
+        renderContent();
+        if (clickedName == 'blocks') {
+          Blockly.mainWorkspace.setVisible(true);
+        }
+        Blockly.fireUiEvent(window, 'resize');
+      }
+
+      /**
+       * Populate the currently selected pane with content generated from the blocks.
+       */
+      function renderContent() {
+        var content = document.getElementById('content_' + selected);
+        // Initialize the pane.
+        if (content.id == 'content_blocks') {
+          // If the workspace was changed by the XML tab, Firefox will have performed
+          // an incomplete rendering due to Blockly being invisible.  Rerender.
+          Blockly.mainWorkspace.render();
+        } else if (content.id == 'content_cucumber') {
+          var cucumberTextarea = document.getElementById('content_cucumber');
+          cucumberTextarea.value = Blockly.Cucumber.workspaceToCode();
+          cucumberTextarea.focus();
+        } else if (content.id == 'content_cucumberJS') {
+          var cucumberJSTextarea = document.getElementById('content_cucumberJS');
+          cucumberJSTextarea.value = Blockly.CucumberJS.workspaceToCode();
+          cucumberJSTextarea.focus();
+        }
+      }
+      /**
+       * Initialize Blockly.  Called on page load.
+       */
+      function init() {
+        window.addEventListener('resize', onresize, false);
+
+        var toolbox = document.getElementById('toolbox');
+        Blockly.inject(document.getElementById('content_blocks'),
+            {grid:
+                {spacing: 25,
+                 length: 3,
+                 colour: '#ccc',
+                 snap: true},
+             media: '../../media/',
+             toolbox: toolbox});
+      }
+        </script>
+        <style>
+
+        </style>
+      </head>
+      <body onload="init()">
+        <table width="100%">
+           <tr>
+             <td>
+               <h1>Code Like A Child</h1>
+             </td>
+           </tr>
+           <tr>
+             <td>
+               <table width="100%">
+                 <tr id="tabRow" height="1em">
+                   <td id="tab_blocks" class="tabon" onclick="tabClick('blocks')">Blocks</td>
+                   <td class="tabmin">&nbsp;</td>
+                   <td id="tab_cucumber" class="taboff" onclick="tabClick('cucumber')">Cucumber</td>
+                   <td class="tabmin">&nbsp;</td>
+                   <td id="tab_cucumberJS" class="taboff" onclick="tabClick('cucumberJS')">Cucumber JS</td>
+                   <td class="tabmax"/>
+                 </tr>
+               </table>
+             </td>
+           </tr>
+
+         </table>
+
+           <!-- 3. The div in which Blockly is injected -->
+         <div id="content_blocks" class="content" style="height: 600px; width: 100%;position: absolute;"></div>
+         <textarea id="content_cucumber" class="content" readonly wrap="off" style="height: 600px; width: 100%;left: 5px; position: absolute; top: 150px;visibility:hidden"></textarea>
+         <textarea id="content_cucumberJS" class="content" wrap="off" style="height: 600px; width: 100%;left: 5px; position: absolute; top: 150px;visibility:hidden"></textarea>
+
+         <!-- 4. toolbox -->
+         <xml id="toolbox" style="display: none">
+
+           <category name="Math"  colour="230">
+             <block type="math_number"></block>
+
+           </category>
+           <category name="Texte" colour="115">
+             <block type="text"></block>
+           </category>
+
+           <category name="Cucumber" colour="50">
+             <!-- TODO -->
+           </category>
+
+         </xml>
+       </body>
 </html>
