@@ -13,6 +13,9 @@
     <script src="blockly/generators/cucumber/cucumber.js"></script>
     <script src="blockly/generators/cucumber/blocks.js"></script>
 
+    <script src="blockly/generators/cucumberJS/cucumberJS.js"></script>
+    <script src="blockly/generators/cucumberJS/blocks.js"></script>
+
 
     <!-- 2. Include localization scripts -->
     <script src="blockly/msg/js/en.js"></script>
@@ -137,7 +140,11 @@
            </category>
 
            <category name="Cucumber" colour="50">
-             <!-- TODO -->
+             <block type="feature"></block>
+             <block type="scenario"></block>
+             <block type="init_variable"></block>
+             <block type="increment_variable"></block>
+             <block type="should_contain"></block>
            </category>
 
          </xml>
