@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Code Like A Child - Cucumber</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- 1. Include Blockly scripts -->
+    <script src="blockly/blockly_uncompressed.js"></script>
+    <script src="blockly/blocks_compressed.js"></script>
+
+    <!-- 2. Include localization scripts -->
+    <script src="blockly/msg/js/en.js"></script>
+  </head>
+  <body>
+    <h1>Code Like A Child</h1>
+
+     <!-- 3. The div in which Blockly is injected -->
+     <div id="content_blocks" class="content" style="height: 600px; width: 100%;"></div>
+
+    <!-- 4. toolbox -->
+     <xml id="toolbox" style="display: none">
+
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="controls_repeat_ext"></block>
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+      <block type="text"></block>
+      <block type="text_print"></block>
+
+     </xml>
+
+     <!-- 5. Blockly injection -->
+    <script>
+      var workspace = Blockly.inject('content_blocks',
+          {media: '../../media/',
+           toolbox: document.getElementById('toolbox')});
+    </script>
+  </body>
+</html>
